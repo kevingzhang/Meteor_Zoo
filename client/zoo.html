@@ -1,0 +1,12 @@
+<template name="zoo">
+	<div>This is a multiplayer game. After start, you can add new animal to  the zoo. It can move around inside the zoo. You can see the color getting dark, that means it is hungry. If you do not feed it before it change to black, it will die. You can click it by feed it. </div>
+	<button id='start' class="btn btn-default">{{Greeting}}</button>
+	{{#if ShowButton}}
+	<button id="input" class="btn btn-default">Click here to add new animal.  </button>
+	
+	<div>
+		<canvas id="zoocanvas" width="500" height="500">
+		</canvas>
+	</div>
+	{{/if}}
+</template>
