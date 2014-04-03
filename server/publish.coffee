@@ -25,18 +25,20 @@ Meteor.startup ()->
 
 				if a.Energy > 0 
 					a.Energy -= 1
-					if a.Energy >= 58
-						a.Color = "#FF0000"
-					if 58 > a.Energy >= 40
-						a.Color = "#990000"
-					if 40 > a.Energy >= 30
-						a.Color = "#770000"
-					if 30 > a.Energy >= 20
-						a.Color = "440000"
-					if 20 > a.Energy >= 10
-						a.Color = "330000"
-					if 10 > a.Energy >= 0
-						a.Color = "000000"
+					c = Math.floor(a.Energy / 60 * 255)
+					a.Color = "##{c.toString(16)}0000"
+					# if a.Energy >= 58
+					# 	a.Color = "#FF0000"
+					# if 58 > a.Energy >= 40
+					# 	a.Color = "#990000"
+					# if 40 > a.Energy >= 30
+					# 	a.Color = "#770000"
+					# if 30 > a.Energy >= 20
+					# 	a.Color = "440000"
+					# if 20 > a.Energy >= 10
+					# 	a.Color = "330000"
+					# if 10 > a.Energy >= 0
+					# 	a.Color = "000000"
 					a.Alive = true
 				else
 					a.Alive = false
