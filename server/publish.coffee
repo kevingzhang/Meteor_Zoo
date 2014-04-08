@@ -1,7 +1,7 @@
 Meteor.startup ()->
 	console.log "Meteor zoo started"
 	runEverySecServer = ()->
-		console.log "run every sec"
+		#console.log "run every sec"
 		allAnimals = Animals.find().fetch()
 		for a in allAnimals
 			#console.log "#{JSON.stringify a}"

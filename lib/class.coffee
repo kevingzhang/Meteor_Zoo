@@ -1,10 +1,11 @@
-class @animal
+root = global ? window
+
+class root.Animal
 	constructor:(data)->
 		if data?
 			@_id = data._id
 			@PosX = data.PosX
 			@PosY = data.PosY
-			@Color = data.Color
 			@Energy = data.Energy
 			@Alive = data.Alive
 			@oldPosX = data.oldPosX
@@ -15,11 +16,8 @@ class @animal
 			@PosY = Math.floor(Math.random()*500)
 			@oldPosX = -1
 			@oldPosY = -1
-			@Color = "#FF0000"
 			@Energy = 60
 			@Alive = true
-
-
 
 
 	UpdateData:(data)->
@@ -27,7 +25,6 @@ class @animal
 			@_id = data._id
 			@PosX = data.PosX
 			@PosY = data.PosY
-			@Color = data.Color
 			@Energy = data.Energy
 			@Alive = data.Alive
 			#@oldPosX = data.oldPosX
@@ -78,7 +75,7 @@ class @animal
 			ctx.fillRect(@oldPosX, @oldPosY, 30 , 30)
 		#draw new
 		if @Alive
-			ctx.fillStyle = @Color
+			ctx.fillStyle = @Color()
 			ctx.fillRect(@PosX, @PosY, 30 , 30)
 			@oldPosX = @PosX
 			@oldPosY = @PosY
@@ -86,6 +83,8 @@ class @animal
 			@oldPosX = -1
 			@oldPosY = -1
 
+	Color:->
+		console.log "Donot call me, I am a virtual function"
 	# DrawNewPos: (ctx)->
 	# 	ctx.fillStyle = @Color
 	# 	ctx.fillRect(@PosX, @PosY, 30 , 30)
@@ -122,5 +121,53 @@ class @animal
 
 
 
+class root.Dog extends Animal 
+	constructor:(data)->
+		if data? and data.AnimalType isnt 'dog'
+			console.log  "Not Dog but try to inital as a Dog"
+			return
+
+
+		@AnimalType = "dog"
+		super(data)
+	Color:()->
+		c = Math.floor(@Energy / 60 * 255)
+		"##{c.toString(16)}0000"
+
+class root.Cat extends Animal 
+	constructor:(data)->
+		if data? and data.AnimalType isnt  "cat"
+			console.log  "Not Cat but try to inital as a Cat"
+			return 
+		@AnimalType = "cat"
+		super(data)
+		
+	Color:()->
+		c = Math.floor(@Energy / 60 * 255)
+		"#00#{c.toString(16)}00"
+
+
+class root.Bird extends Animal 
+	constructor:(data)->
+		if data? and data.AnimalType isnt "bird"
+			console.log  "Not Bird but try to inital as a Bird"
+			return 
+		@AnimalType = "bird"
+		super(data)
+		
+	Color:()->
+		c = Math.floor(@Energy / 60 * 255)
+		"#0000#{c.toString(16)}"
+
+root.InitNewAnimal = (data)->
+	switch data.AnimalType
+		when "dog"
+			return new Dog(data)
+		when "cat"
+			return new Cat(data)
+		when "bird"
+			return new Bird(data)
+		else
+			console.log "No such an animal. No new animal created"
 
 

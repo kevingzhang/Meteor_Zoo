@@ -1,4 +1,6 @@
 #template
+root = global ? window
+
 Template.zoo.helpers
 	"Greeting":()->
 		if Session.equals 'running',true
@@ -13,7 +15,7 @@ Template.zoo.events
 	"click #start":()->
 		runEverySec = ()->
 			#update server's new animal
-			console.log "every sec"
+			#console.log "every sec"
 			c = document.getElementById("zoocanvas");
 			ctx = c.getContext("2d");
 			animals = Animals.find().fetch()
@@ -22,7 +24,7 @@ Template.zoo.events
 					#new animal added from server
 					if q.Alive
 						console.log "create new from database"
-						window.allAnimals[q._id] = new animal(q)
+						window.allAnimals[q._id] = root.InitNewAnimal(q)
 				else
 					unless q.Alive
 						console.log "removed dead"
@@ -49,13 +51,36 @@ Template.zoo.events
 					if q.Alive
 						#there is new animal from server
 						console.log "add new from database"
-						window.allAnimals[q._id] = new animal(q)
+						window.allAnimals[q._id] = root.InitNewAnimal(q)
 			console.log "client start timer"
 			interval = Meteor.setInterval(runEverySec, 1000)
 			Session.set 'running', true
-	"click #input":()->
+	"click .addpet":(e)->
 		#alert("new animal will be added")
-		newAnimal = new animal()
+		petType = e.target.getAttribute "data-pet"
+		r = Math.random()
+		switch petType
+			when "cat"
+				newAnimal = new root.Cat()
+			when 'dog'
+				newAnimal = new root.Dog()
+			when "bird"
+				newAnimal = new root.Bird()
+		console.log "new animal is " + JSON.stringify newAnimal
+		if newAnimal instanceof root.Cat
+			console.log "instance of Cat"
+		if newAnimal instanceof root.Animal
+			console.log "instance of Animal"
+		if newAnimal instanceof root.Dog
+			console.log "instance of Dog"
+
+		newAnimal.name = newAnimal.name
+		# if r > 66
+		# 	newAnimal = new dog()
+		# else if r < 33
+		# 	newAnimal = new bird()
+		# else
+		# 	newAnimal = new cat()
 
 		c = document.getElementById("zoocanvas");
 		ctx = c.getContext("2d");
